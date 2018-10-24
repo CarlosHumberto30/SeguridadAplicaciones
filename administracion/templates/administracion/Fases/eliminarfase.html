@@ -1,0 +1,24 @@
+{% extends 'main/page.html' %}
+{% block extrastyle %}
+{{ block.super }}
+/* Remove the navbar's default margin-bottom and rounded borders */
+.nav-tabs {
+background-color: #000000;
+}
+a { color: #FFFFFF; }
+{% endblock %}
+{% block content %}
+<div align="center" class="container-fluid">
+    <form method="post">
+        {% csrf_token %}
+        <br>
+        <fieldset>
+            <legend>Eliminar Fase</legend>
+        </fieldset>
+        <h3>¿Desea eliminar la fase: <strong>{{ object.descripcion }}</strong> del registro?</h3>
+        <br>
+        <button class="btn btn-warning" type="submit">Eliminar</button>
+        <a class="btn btn-primary" href="{% url 'administracion:listarfase' %}">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

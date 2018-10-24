@@ -1,0 +1,312 @@
+{% extends 'main/page.html' %}
+{% load i18n static %}
+
+{% block content %}
+<br>
+
+<div align="center" class="container" id="divajax">
+    <script> var cont = 0;</script>
+    <fieldset>
+        <legend>Ingreso de Requerimientos</legend>
+    </fieldset>
+    <div class="row">
+        <form method="post" id="FORM-ID" class="form-horizontal">
+            {% csrf_token %}
+            <div class="col-md-5">
+                 <div class="form-group">
+
+                    <label>Seleccione Versión</label>
+                    {{ form.version}}
+                </div>
+                <div class="form-group">
+
+                    <label >Seleccione Tema <a onclick="return abrir_modal('{% url 'administracion:creartema' %}')" style="color:blue" >
+                        <span class="glyphicon glyphicon-plus-sign" style=" font-size: 25px"  data-toggle="tooltip" data-placement="top" title="Agregar Tema"></span></p>
+                    </a></label>
+                    {{ form.tema}}
+
+                </div>
+
+            </div>
+            <div class="col-md-2">
+
+
+
+
+
+            </div>
+
+            <div class="col-md-5">
+                 <div class="form-group">
+                    <label>Ingrese Requerimiento</label>
+                    <div align="left">
+                        {{ form.descripcion}}
+                    </div>
+                </div>
+
+            </div>
+            <footer class="footer navbar-fixed-bottom" style="padding:0.5%; height:auto;">
+                <input class="btn btn-primary" type="submit" value="Guardar" data-toggle="modal"
+                       data-target=".bd-example-modal-sm" data-backdrop="static" data-keyboard="false"/>
+            </footer>
+        </form>
+    </div>
+    <br>
+    <br>
+    <br>
+
+<fieldset>
+    <legend>Lista de Requerimientos</legend>
+</fieldset>
+    <label>
+       Filtrar por tema
+
+    <select id="filtrotema" onchange="filtrartabla(this.value)">
+        <option value="0"> Todos los temas</option>
+        {%for tema in temas_all %}
+        <option value="{{tema.id}}"> {{tema.descripcion_tema}}</option>
+        {% endfor %}
+    </select>
+</label>
+    <div id="divtable">
+
+        {% include "administracion/Requerimiento/tabla.html" %}
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div id="modal" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog"
+         aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <img src="{% static 'main/ajax/gifcargando.gif' %}">
+            </div>
+        </div>
+    </div>
+
+
+    <div id="popup" class="modal fade" role="dialog">
+
+    </div>
+
+ <script type="text/javascript" src="{% static 'main/datatables/datatables.js' %}"></script>
+    <script>
+     var frm = $('#FORM-ID');
+     var formtema="";
+    frm.submit(function (e) {
+    e.preventDefault();
+      for (instance in CKEDITOR.instances) {
+        CKEDITOR.instances[instance].updateElement();
+
+    }
+
+        $.ajax({
+            type: 'POST',
+            url: frm.attr('.'),
+            data: frm.serialize(),
+            success: function (data) {
+            if (data.is_taken) {
+             console.log(data.is_taken);
+             $('#modal').modal('hide')
+              actualizartablarequerimientos();
+
+              $('#id_descripcion').val("");
+              CKEDITOR.instances['id_descripcion'].setData("");
+             }
+            },
+            error: function(data) {
+
+            }
+        });
+
+        return false;
+    });
+
+
+$(document).ready(function() {
+
+
+
+        $('textarea').each(function(e){
+         CKEDITOR.disableAutoInline = true;
+
+         CKEDITOR.inline( this.id,{
+        'height': 100,
+} );
+    });
+
+
+} );
+
+
+
+function filtrartabla(id) {
+        var version=$('#id_version').val()
+        $.ajax({
+            type: 'GET',
+            url: '/administracion/filtrotablarequerimientos/',
+            data: {'id':id,'version':version},
+            success: function (data) {
+            if (data.is_taken) {
+               $('#divtable').html(data.is_taken);
+
+                $('#tablarequerimientos').DataTable({
+    "scrollY": "500px",
+    "scrollCollapse": true,
+     "paging":   false,
+        "ordering": false,
+        "info":     false
+  });
+             }
+            },
+            error: function(data) {
+
+            }
+        });
+        return false;
+    }
+
+
+
+function abrir_modal(url)
+{
+        $('#popup').load(url, function()
+        {
+                $(this).modal('show');
+
+
+
+        });
+
+        return false;
+}
+
+function abrir_modalEditarRequerimiento(url)
+{
+        $('#popup').load(url, function()
+        {
+                $(this).modal('show');
+
+         CKEDITOR.disableAutoInline = true;
+         CKEDITOR.inline('id_editardescripcion',{
+        'height': 100,
+} );
+
+        });
+
+        return false;
+}
+
+
+function cerrar_modal()
+{
+        $('#popup').modal('hide');
+
+        return false;
+}
+
+ function enviar(){
+   var formtema = $('#formtema');
+        $.ajax({
+            type: 'POST',
+            url: formtema.attr('action'),
+            data: formtema.serialize(),
+            success: function (data) {
+            if (data.tema_id) {
+
+             $("#id_tema").append(new Option(data.tema_descripcion, data.tema_id));
+              cerrar_modal();
+              actualizartablarequerimientos();
+             }
+            },
+            error: function(data) {
+
+            }
+        });
+
+        return false;
+
+    }
+
+function actualizarrequerimiento(){
+   var FormEditarRequerimiento = $('#FormEditarRequerimiento');
+    for (instance in CKEDITOR.instances) {
+        CKEDITOR.instances[instance].updateElement();
+    }
+
+        $.ajax({
+            type: 'POST',
+            url:  FormEditarRequerimiento.attr('action'),
+            data: FormEditarRequerimiento.serialize(),
+            success: function (data) {
+
+              cerrar_modal();
+              actualizartablarequerimientos();
+
+            },
+            error: function(data) {
+
+            }
+        });
+
+        return false;
+
+    }
+
+function eliminarrequerimiento(){
+   var FormEliminarRequerimiento = $('#FormEliminarRequerimiento');
+        $.ajax({
+            type: 'POST',
+            url:  FormEliminarRequerimiento.attr('action'),
+            data: FormEliminarRequerimiento.serialize(),
+            success: function (data) {
+              cerrar_modal();
+              actualizartablarequerimientos();
+
+            },
+            error: function(data) {
+
+            }
+        });
+
+        return false;
+
+    }
+
+
+
+    function actualizartablarequerimientos(){
+        var tema= $('#filtrotema').val()
+        var version=$('#id_version').val()
+        $.ajax({
+            type: 'GET',
+            url: '{% url 'administracion:actualizartablarequerimientos' %}',
+            data: {'tema':tema,'version':version},
+            success: function (data) {
+            if (data.tablaRequerimientosHtml) {
+
+             $('#divtable').html(data.tablaRequerimientosHtml);
+             $('#tablarequerimientos').DataTable({
+                    "scrollY": "500px",
+                    "scrollCollapse": true,
+                     "paging":   false,
+                        "ordering": false,
+                        "info":     false
+                  });
+             }
+            },
+            error: function(data) {
+
+            }
+        });
+
+        return false;
+
+    }
+
+    </script>
+</div>
+
+{% endblock %}

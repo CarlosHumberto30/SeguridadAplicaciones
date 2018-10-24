@@ -1,0 +1,202 @@
+{% extends 'main/page.html' %}
+{% load i18n static %}
+
+{% block content %}
+<br>
+<div align="center">
+    <fieldset>
+        <legend>Editar Proyecto</legend>
+    </fieldset>
+    <form action="" class="form-horizontal" method="post" id="form2">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="{{form.nombre.id_for_label}}">{{form.nombre.label}}</label>
+            <div class="col-sm-4">
+                {{form.nombre}}
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="{{form.usuario.id_for_label}}">{{form.usuario.label}}</label>
+            <div class="col-sm-4">
+              {% if Rol == "QSA" %}
+                <select name="usuario" class="form-control input-sm" required id="id_usuario">
+                    <option value="{{ user.id }}">{{ user.username }}</option>
+                </select>
+                {% else %}
+                {{form.usuario}}
+                {% endif %}
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="{{form.cliente.id_for_label}}">{{form.cliente.label}}</label>
+            <div class="col-sm-4">
+                {{form.cliente}}
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="{{form.fecha_ini.id_for_label}}">{{form.fecha_ini.label}}</label>
+            <div class="col-sm-4">
+                {{form.fecha_ini}}
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+
+        {%if form.estado.value == "T" %}
+        <div class="form-group" id="fechafin" >
+            {% else %}
+            <div class="form-group" id="fechafin" hidden="false">
+            {% endif %}
+            <label class="control-label col-sm-4" for="{{form.fecha_fin.id_for_label}}">{{form.fecha_fin.label}}</label>
+            <div class="col-sm-4">
+                {{form.fecha_fin}}
+            </div>
+            <label class="help-block col-sm-3"></label>
+          </div>
+         <div class="alert alert-danger alert-dismissible fade in" hidden>
+
+               La fecha de finalización debe ser mayor a la fecha de inicio del proyecto
+           </div>
+
+         <div class="form-group">
+            <label class="control-label col-sm-4" for="{{form.estado.id_for_label}}">{{form.estado.label}}</label>
+            <div class="col-sm-4">
+                {{form.estado}}
+            </div>
+             <label class="help-block col-sm-3"></label>
+         </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4" for="{{form.version.id_for_label}}">{{form.version.label}}</label>
+            <div class="col-sm-4">
+                {{form.version}}
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+
+         <footer class="footer navbar-fixed-bottom" style="padding:0.5%; height:auto;">
+        <button id="submit" class="btn btn-primary"  type="submit">Guardar</button>
+        <a class="btn btn-warning" role="button" href="{% url 'administracion:listarproyecto' %}">Cancelar</a>
+         </footer>
+        </div>
+    </form>
+<div class="container">
+    <div class="col-sm-4">
+
+    </div>
+    <div  class="col-sm-4" style="margin-left: auto; margin-right: auto;" align="center">
+     {% if cuestionarioscongelados %}
+         <fieldset >
+        <legend> Cuestionarios Congelados </legend>
+    </fieldset><br>
+    <table class="table table-striped table-bordered table-hover" width="200px" >
+            <thead style="background-color: #000000; color: white;">
+                <tr>
+
+                    <th style="text-align: center;">Cuestionario</th>
+
+                    <th style="text-align: center;">Acciones</th>
+                </tr>
+            </thead>
+        <tbody>
+        {%for cuestionario in cuestionarioscongelados %}
+        <tr>
+            <td id="{{cuestionario.id}}">
+                 {%if cuestionario.modulo == 'G' %}
+                    <label>ReporteFeel</label>
+                {% elif cuestionario.modulo == 'S' %}
+                <label>Seguimiento </label>
+                {% elif cuestionario.modulo == 'A' %}
+                <label>Auditoria </label>
+                  {% endif %}
+            </td>
+            <td align="center">
+                <a type="button" class="btn btn-default btn-sm" onclick="descongelar({{cuestionario.id}})">
+                   Descongelar</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        {% endif %}
+    </div>
+     <div class="col-sm-4">
+
+    </div>
+    </div>
+    <div id="modal" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+     <img src="{% static 'main/ajax/gifcargando.gif' %}">
+    </div>
+  </div>
+  </div>
+
+    <script>
+
+ $("#form2").on('submit', function(evt){
+ $('#modal').modal('show');
+ var estado = document.getElementById("id_estado");
+ var fini = document.getElementById('id_fecha_ini');
+ var ffin = document.getElementById('id_fecha_fin');
+ var fechainicio = new Date(document.getElementById('id_fecha_ini').value);
+ var fechafin = new Date(document.getElementById('id_fecha_fin').value);
+
+ if(estado.value == 'T'){
+if (fechainicio <= fechafin) {
+
+}
+else {
+
+ $(".alert").show();
+ $('#modal').modal('hide');
+  evt.preventDefault();
+    }
+}else{
+ffin.value="";
+}
+
+ });
+
+ function cambioestado(id){
+ var estado = document.getElementById(id);
+
+  if(estado.value == 'T'){
+
+   document.getElementById("id_fecha_fin").required = true;
+  $("#fechafin").show();
+
+  }else{
+
+    document.getElementById("id_fecha_fin").required = false;
+  $("#fechafin").hide();
+  }
+ }
+
+
+function descongelar(id){
+
+        $.ajax({
+            type: 'GET',
+            url: '/administracion/descongelarcuestionario/',
+            data: {'id':id},
+            success: function (data) {
+            if (data.eliminado) {
+                $("#"+id).closest('tr').remove();
+             }
+            },
+            error: function(data) {
+
+            }
+        });
+        return false;
+
+}
+
+
+</script>
+</div>
+{% endblock %}

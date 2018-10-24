@@ -1,0 +1,31 @@
+{% extends 'main/page.html' %}
+{% load i18n static %}
+
+{% block content %}
+<div align="center">
+    <form method="post">
+        {% csrf_token %}
+        <br>
+        <fieldset>
+            <legend>Eliminar Proyecto</legend>
+        </fieldset>
+            <h3>¿Desea eliminar el proyecto: <strong>{{ object.nombre }}</strong> del registro?</h3>
+        <br>
+            <button class="btn btn-warning" type="submit">Eliminar</button>
+            <a class="btn btn-primary" href="{% url 'administracion:listarproyecto' %}">Cancelar</a>
+    </form>
+
+     <div id="modal" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+     <img src="{% static 'main/ajax/gifcargando.gif' %}">
+    </div>
+  </div>
+</div>
+</div>
+<script>
+ $("#form").on('submit', function(evt){
+ $('#modal').modal('show');
+ });
+</script>
+{% endblock %}

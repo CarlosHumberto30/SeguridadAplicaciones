@@ -1,0 +1,24 @@
+{% extends 'main/page.html' %}
+{% block title %} Login {% endblock %}
+
+{% block content %}
+<div align="center" class="container-fluid">
+  <form action='' method='post'>
+      {% csrf_token %}
+      <p><strong>Resuelva el capcha para intentar ingresar de nuevo</strong></p>
+       {{ form.captcha.errors }}
+       {{ form.captcha }}
+
+
+        <input class="btn btn-primary" type="submit" value="Enviar"/>
+  </form>
+
+</div>
+
+ <footer class="footer navbar-fixed-bottom" style="padding:0.5%; height:auto;">
+     <div align="center">
+         <p> <strong>Nota:</strong> si olvido su contraseña por favor contactar con un usuario administrador </p>
+     </div>
+
+ </footer>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'main/page.html' %}
+{% block extrastyle %}
+{{ block.super }}
+/* Remove the navbar's default margin-bottom and rounded borders */
+.nav-tabs {
+background-color: #000000;
+}
+a { color: #FFFFFF; }
+{% endblock %}
+
+{% block content %}
+<script> var cont = 0;</script>
+<div align="center" class="container-fluid">
+    <br>
+    <fieldset>
+        <legend align="center">Listado de Fases</legend>
+    </fieldset>
+    {% if object_list %}
+    <table class="table table-striped table-bordered table-hover" style="text-align: center;">
+        <thead align="center">
+            <tr>
+                <th style="text-align: center;">No. Fase</th>
+                <th style="text-align: center;">Fase</th>
+                <th style="text-align: center;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fase in object_list %}
+            <tr>
+                <td class="col-sm-1"><script>cont = cont+1; document.write(cont); </script></td>
+                <td class="col-sm-5">{{fase.descripcion }}</td>
+                <td class="col-sm-2">
+                    <a class="btn btn-primary btn-sm" role="button" href="{% url 'administracion:editarfase' fase.id %}">
+                    Editar Fase</a>
+                    <a class="btn btn-warning btn-sm" role="button"href="{% url 'administracion:eliminarfase' fase.id %}">
+                    Eliminar Fase</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Error!  </strong>No hay registros de Fases <a href="{% url 'administracion:crearfase' %}" class="alert-link"> Debe agregar o crear una Fase</a>.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

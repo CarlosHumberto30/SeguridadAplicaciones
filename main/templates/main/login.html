@@ -1,0 +1,27 @@
+{% extends 'main/page.html' %}
+{% block title %} Login {% endblock %}
+
+{% block content %}
+<div  class="container-fluid" align="center">
+  <form action='' method='post'>
+      {% csrf_token %}
+      <br>
+      <fieldset>
+            <legend> Seguridad de Aplicaciones </legend>
+      </fieldset>
+      <table style="width: 25%; height:100px;">
+          <tr>
+              <td align="right"><label>Usuario:&nbsp;</label></td>
+              <td>{{ form.username }}</td>
+          </tr>
+          <tr>
+              <td align="right"><label>Contraseña:&nbsp;</label></td>
+              <td>{{ form.password }}</td>
+          </tr>
+      </table>
+
+      <br>
+        <input class="btn btn-primary" type="submit" value="Iniciar Sesión"/>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'main/page.html' %}
+{% block content %}
+<br>
+<div align="center">
+    <fieldset>
+        <legend>Crear Fase</legend>
+    </fieldset>
+    <form  action="" class="form-horizontal" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="{{form.descripcion.id_for_label}}">{{form.descripcion.label}}</label>
+            <div class="col-sm-5">
+                {{form.descripcion}}
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+        <button id="submit" class="btn btn-primary" type="submit">Guardar</button>
+    </form>
+</div>
+{% endblock %}

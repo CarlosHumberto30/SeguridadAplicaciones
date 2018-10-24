@@ -1,0 +1,49 @@
+{% extends 'main/page.html' %}
+
+{% block content %}
+<script> var cont = 0;</script>
+<div align="center">
+    <br>
+    <fieldset>
+                 <legend align="center">Listado de Versiones</legend>
+    </fieldset>
+    {% if object_list %}
+        <table class="table table-striped table-hover" style="text-align: center;">
+            <thead align="center" style="background-color: #000000; color: white;">
+                <tr>
+                    <th style="text-align: center;">No. </th>
+                    <th style="text-align: center;">Versión</th>
+                    <th style="text-align: center;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody align="center">
+
+        {% for version in object_list %}
+            <tr>
+               <td class="col-sm-1"><script>cont = cont+1; document.write(cont); </script></td>
+               <td class="col-sm-6">{{version.nombre}}</td>
+               <td class="col-sm-2">
+                   <div class="btn-group">
+  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Acción <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><a href="{% url 'administracion:editarversion' version.id %}">Editar versión</a></li>
+    <li><a href="{% url 'administracion:eliminarversion' version.id %}"> Eliminar Versión</a></li>
+
+  </ul>
+</div>
+               </td>
+            </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Error!  </strong>No hay registros de Versión <a href="{% url 'administracion:crearversion' %}" class="alert-link"> Debe agregar o crear una Versión</a>.
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'main/page.html' %}
+{% load i18n static %}
+{% block content %}
+<br>
+<div align="center">
+    <fieldset>
+        <legend>Editar Cliente</legend>
+    </fieldset>
+    <form action="" method="post" class="form-horizontal" id="form">
+        {% csrf_token %}
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="{{ form1.nombre.id_for_label }}">
+                   {{ form1.id }} {{ form1.nombre.label }}
+                </label>
+                <div class="col-sm-5">
+                    {{form1.nombre}}
+                </div>
+                <span class="help-block col-sm-3"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="{{ form1.nit.id_for_label }}">
+                    {{ form1.nit.label }}
+                </label>
+                <div class="col-sm-5">
+                    {{form1.nit}}
+                </div>
+                <span class="help-block col-sm-3"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="{{ form1.numero.id_for_label }}">
+                    {{ form1.numero.label }}
+                </label>
+                <div class="col-sm-5">
+                    {{form1.numero}}
+                </div>
+                <span class="help-block col-sm-3"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="{{ form1.status.id_for_label }}">
+                    {{ form1.status.label }}
+                </label>
+                <div class="col-sm-5">
+                    {{form1.status}}
+                </div>
+                <span class="help-block col-sm-3"></span>
+            </div>
+        </div>
+
+
+         <footer class="footer navbar-fixed-bottom" style="padding:0.5%; height:auto;">
+        <input class="btn btn-primary" type="submit" value="Guardar"/>
+        <a class="btn btn-warning" role="button" href="{% url 'administracion:listarcliente' %}">Cancelar</a>
+         </footer>
+    </form>
+
+         <div id="modal" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+     <img src="{% static 'main/ajax/gifcargando.gif' %}">
+    </div>
+  </div>
+</div>
+</div>
+<script>
+ $("#form").on('submit', function(evt){
+ $('#modal').modal('show');
+ });
+  function validarnumero(id){
+
+var input = document.getElementById(id);
+var txtid="#"+id;
+    if (!/^[+()0-9]*$/i.test(input.value)) {
+        input.value = input.value.replace(/[^ +()0-9]+/ig,"");
+        $(txtid).parent().siblings(".help-block").text("caracter no permitido");
+         $(txtid).parent().siblings(".help-block").show();
+
+    }else{
+     $(txtid).parent().siblings(".help-block").hide();
+    }
+}
+</script>
+
+{% endblock %}

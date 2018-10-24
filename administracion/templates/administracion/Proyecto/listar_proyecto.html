@@ -1,0 +1,156 @@
+{% extends 'main/page.html' %}
+
+{% block content %}
+<script> var cont = 0;</script>
+<br>
+<div align="center">
+    <fieldset>
+        <legend align="center">Listado de Proyecto</legend>
+    </fieldset>
+    {% if proyectos %}
+        <table class="table" >
+            <thead style="background-color: #000000; color: white;">
+                <tr>
+                    <th style="text-align: center;">No. </th>
+                    <th style="text-align: center;">Proyecto</th>
+                    <th style="text-align: center;">Usuario</th>
+                    <th style="text-align: center;">Cliente</th>
+                    <th style="text-align: center;">Fecha Inicio</th>
+
+                    <th style="text-align: center;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody align="center">
+            {% for proyecto in proyectos %}
+                <tr>
+                   <td class="col-sm-1"><script>cont = cont+1; document.write(cont); </script></td>
+                   <td class="col-sm-1">{{proyecto.nombre}}</td>
+                   <td class="col-sm-1">{{proyecto.usuario}}</td>
+                   <td class="col-sm-1">{{proyecto.cliente}}</td>
+
+                   <td class="col-sm-1">{{proyecto.fecha_ini}}</td>
+
+                   <td class="col-sm-2">
+                     <div class="btn-group">
+  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Acción <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+      {% if perms.administracion.change_proyecto %}
+    <li ><a href="{% url 'administracion:editarproyecto' proyecto.id %}"><span class="glyphicon glyphicon-edit"></span> Editar Proyecto</a></li>
+       {% endif %}
+       {% if perms.administracion.delete_proyecto %}
+      <li><a href="{% url 'administracion:eliminarproyecto' proyecto.id %}"><span class="glyphicon glyphicon-remove"></span>Eliminar Proyecto</a></li>
+{% endif %}
+  </ul>
+</div>
+
+
+                   </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-dismissible alert-success">
+
+            No hay registros de proyectos para este usuario.
+        </div>
+    {% endif %}
+
+     <fieldset>
+        <legend align="center">Listado de Proyecto Inactivos</legend>
+    </fieldset>
+    {% if proyectosinactivos %}
+        <table class="table" >
+            <thead style="background-color: #000000; color: white;">
+                <tr>
+                    <th style="text-align: center;">No. </th>
+                    <th style="text-align: center;">Proyecto</th>
+                    <th style="text-align: center;">Usuario</th>
+                    <th style="text-align: center;">Cliente</th>
+                    <th style="text-align: center;">Fecha Inicio</th>
+
+                    <th style="text-align: center;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody align="center">
+            {% for proyecto in proyectosinactivos %}
+                <tr>
+                   <td class="col-sm-1"><script>cont = cont+1; document.write(cont); </script></td>
+                   <td class="col-sm-1">{{proyecto.nombre}}</td>
+                   <td class="col-sm-1">{{proyecto.usuario}}</td>
+                   <td class="col-sm-1">{{proyecto.cliente}}</td>
+
+                   <td class="col-sm-1">{{proyecto.fecha_ini}}</td>
+
+                   <td class="col-sm-2">
+                    {% if perms.administracion.change_proyecto %}
+                   <a type="button" class="btn btn-primary btn-sm" href="{% url 'administracion:editarproyecto' proyecto.id %}">
+                   Editar Proyecto</a><br><br>
+                     {% endif %}
+                      {% if perms.administracion.delete_proyecto %}
+                   <a type="button" class="btn btn-warning btn-sm" href="{% url 'administracion:eliminarproyecto' proyecto.id %}">
+                   Eliminar Proyecto</a>
+                       {% endif %}
+
+                   </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-dismissible alert-success">
+            No hay registros de Proyectos Inactivos
+        </div>
+    {% endif %}
+ <fieldset>
+        <legend align="center">Listado de Proyecto Terminados </legend>
+    </fieldset>
+    {% if proyectosterminados %}
+        <table class="table" >
+            <thead style="background-color: #000000; color: white;">
+                <tr>
+                    <th style="text-align: center;">No. </th>
+                    <th style="text-align: center;">Proyecto</th>
+                    <th style="text-align: center;">Usuario</th>
+                    <th style="text-align: center;">Cliente</th>
+                    <th style="text-align: center;">Fecha Inicio</th>
+                    <th style="text-align: center;">Fecha Fin</th>
+                    <th style="text-align: center;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody align="center">
+            {% for proyecto in proyectosterminados %}
+                <tr>
+                   <td class="col-sm-1"><script>cont = cont+1; document.write(cont); </script></td>
+                   <td class="col-sm-1">{{proyecto.nombre}}</td>
+                   <td class="col-sm-1">{{proyecto.usuario}}</td>
+                   <td class="col-sm-1">{{proyecto.cliente}}</td>
+
+                   <td class="col-sm-1">{{proyecto.fecha_ini}}</td>
+                   <td class="col-sm-1">{{proyecto.fecha_fin}}</td>
+                   <td class="col-sm-2">
+                    {% if perms.administracion.change_proyecto %}
+                   <a type="button" class="btn btn-primary btn-sm" href="{% url 'administracion:editarproyecto' proyecto.id %}">
+                   Editar Proyecto</a> <br><br>
+                     {% endif %}
+                      {% if perms.administracion.delete_proyecto %}
+                   <a type="button" class="btn btn-warning btn-sm" href="{% url 'administracion:eliminarproyecto' proyecto.id %}">
+                   Eliminar Proyecto</a>
+                       {% endif %}
+                   </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-dismissible alert-success">
+
+            No hay registros de Proyectos terminados
+        </div>
+    {% endif %}
+
+
+    </div>
+{% endblock %}

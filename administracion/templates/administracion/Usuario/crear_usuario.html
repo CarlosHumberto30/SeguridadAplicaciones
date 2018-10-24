@@ -1,0 +1,113 @@
+{% extends 'main/page.html' %}
+{% load i18n static %}
+
+
+{% block content %}
+<br>
+<div align="center">
+    <fieldset>
+             <legend>Crear Usuario</legend>
+    </fieldset>
+    <form action="" class="form-horizontal" method="post" id="form">
+    {% csrf_token %}
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="{{forms.username.id_for_label}}">Nombre de Usuario </label>
+            <div class="col-sm-4">
+                {{forms.username}}
+            </div>
+            <label id="labelusername" class="help-block col-sm-3"></label>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="{{forms.first_name.id_for_label}}">Nombre</label>
+            <div class="col-sm-4">
+                {{forms.first_name}}
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="{{forms.last_name.id_for_label}}">Apellido</label>
+            <div class="col-sm-4">
+                {{forms.last_name}}
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="{{forms.email.id_for_label}}">Email</label>
+            <div class="col-sm-4">
+                {{forms.email}}
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="{{forms.password.id_for_label}}">Contraseña</label>
+            <div class="col-sm-4">
+                {{forms.password}}
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="{{forms.rol.id_for_label}}" >Rol</label>
+            <div class="col-sm-4">
+                <select name="rol" class="form-control input-sm" id="id_rol">
+                    {% for group in groups %}
+                        <option value="{{ group.id }}">{{group.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+
+         <div class="alert alert-danger alert-dismissible fade in" hidden>
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    La contraseña debe  contener entre 8 y 16 caracteres, tener  al menos un numero, letra mayúscula, letra minúscula.
+  </div>
+        <footer class="footer navbar-fixed-bottom" style="padding:0.5%; height:auto;">
+
+            <input class="btn btn-primary" id="submit" type="submit" value="Guardar" style="margin-right:10px; align: center;"  >
+
+</footer>
+
+    </form>
+
+
+
+       <div id="modal" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+     <img src="{% static 'main/ajax/gifcargando.gif' %}">
+    </div>
+  </div>
+</div>
+
+</div>
+<script>
+
+ $("#form").on('submit', function(evt){
+ var valido=0;
+ var input = document.getElementById('id_password');
+ var input = document.getElementById('id_password');
+  var username = document.getElementById('id_username');
+ if (input.value.match(/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/)) {
+ $('#modal').modal('show');
+}else{
+$(".alert").show();
+ evt.preventDefault();
+}
+
+ });
+
+function validartexto(id){
+var input = document.getElementById(id);
+var txtid="#"+id;
+    if (!/^[@.a-z0-9áéíóúüñ_-]*$/i.test(input.value)) {
+        input.value = input.value.replace(/[^@.a-z0-9áéíóúüñ_-]+/ig,"");
+        $(txtid).parent().siblings(".help-block").text("caracter no permitido");
+         $(txtid).parent().siblings(".help-block").show();
+
+    }else{
+     $(txtid).parent().siblings(".help-block").hide();
+    }
+}
+</script>
+
+{% endblock %}

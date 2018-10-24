@@ -1,0 +1,17 @@
+{% extends 'main/page.html' %}
+
+{% block content %}
+<div align="center">
+    <form method="post">
+        {% csrf_token %}
+        <br>
+        <fieldset>
+            <legend>Eliminar Usuario</legend>
+        </fieldset>
+        <h3>¿Desea eliminar el usuario: <strong>{{ object.username }}</strong> del registro?</h3>
+        <br>
+        <button class="btn btn-warning" type="submit">Eliminar</button>
+        <a class="btn btn-primary" href="{% url 'administracion:listarusuario' %}">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

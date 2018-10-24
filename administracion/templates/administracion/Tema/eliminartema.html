@@ -1,0 +1,16 @@
+{% extends 'main/page.html' %}
+
+{% block content %}
+<div align="center">
+    <form method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Eliminar Tema</legend>
+        </fieldset>
+            <h3>¿Desea eliminar el tema: <strong>{{ object.descripcion_tema }}</strong> del registro?</h3>
+        <br>
+        <button class="btn btn-warning" type="submit">Eliminar</button>
+        <a class="btn btn-primary" href="{% url 'administracion:listartema' %}">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

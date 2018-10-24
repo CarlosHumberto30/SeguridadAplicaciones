@@ -1,0 +1,138 @@
+{% extends 'main/page.html' %}
+{% block extrastyle %}
+{% load i18n static %}
+{{ block.super }}
+
+
+
+SELECT, INPUT[type="text"] {
+    width: 160px;
+    box-sizing: border-box;
+}
+SECTION {
+    padding: 8px;
+    background-color: #f0f0f0;
+    overflow: auto;
+}
+SECTION > DIV {
+    float: left;
+    padding: 4px;
+}
+SECTION > DIV + DIV {
+    width: 40px;
+    text-align: center;
+}
+{% endblock %}
+{% block content %}
+<div align="center">
+    <form method="post">
+        {% csrf_token %}
+        <br>
+        <fieldset>
+            <legend>Asignar Usuarios</legend>
+        </fieldset>
+        <p>Le permite dar permiso a otros usuarios para colaborar en el proyecto </p>
+            <h3>proyecto: <strong>{{ proyecto.nombre }}</strong> </h3>
+        <br>
+<br>
+        <section class="container">
+    <div class="col-sm-5">
+         <fieldset>
+            <legend> Usuarios disponibles </legend>
+        </fieldset>
+        <select id="leftValues" size="6"  multiple style="width:300px">
+           {%for usuario in usuarios %}
+           <option value="{{usuario.id}}">
+               {{ usuario.first_name }} {{ usuario.last_name }}
+           </option>
+        {% endfor %}
+        </select>
+    </div>
+    <div class="col-sm-2">
+        <br>
+        <br>
+        <br>
+        <br>
+        <input type="button" class="btn btn-default btn-sm" id="btnRight" value="&gt;&gt;" /><br><br>
+        <input type="button" class="btn btn-default btn-sm" id="btnLeft" value="&lt;&lt;" />
+
+
+    </div>
+    <div class="col-sm-5">
+        <fieldset>
+            <legend>Usuarios Agregados </legend>
+        </fieldset>
+        <select id="rightValues" size="6" multiple style="width:300px">
+            {%for usuario in asignados %}
+           <option value="{{usuario.usuario.id}}">
+               {{ usuario.usuario.first_name }} {{ usuario.usuario.last_name }}
+           </option>
+        {% endfor %}
+        </select>
+
+    </div>
+</section>
+
+         <br>
+
+            <a class="btn btn-primary" onclick="Guardar({{proyecto.id}})" data-toggle="modal" data-target=".bd-example-modal-sm">Guardar</a>
+    </form>
+<div id="modal" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+     <img src="{% static 'main/ajax/gifcargando.gif' %}">
+    </div>
+  </div>
+</div>
+
+
+
+ <script>
+     $("#btnLeft").click(function () {
+    var selectedItem = $("#rightValues option:selected");
+    $("#leftValues").append(selectedItem);
+});
+
+$("#btnRight").click(function () {
+    var selectedItem = $("#leftValues option:selected");
+    $("#rightValues").append(selectedItem);
+});
+
+$("#rightValues").change(function () {
+    var selectedItem = $("#rightValues option:selected");
+    $("#txtRight").val(selectedItem.text());
+});
+
+
+
+ function Guardar(idproyecto) {
+
+var idusuarios=[];
+var sel = document.getElementById("rightValues");
+
+for (var i = 0; i < sel.length; i++) {
+    //  Aca haces referencia al "option" actual
+    var opt = sel[i];
+
+    // Haces lo que te de la gana aca
+    idusuarios.push(opt.value);
+}
+        $.ajax({
+            type: 'GET',
+            url: '/administracion/asignarcolaborador/',
+            data: {'idproyecto':idproyecto,'idusuarios': idusuarios},
+            success: function (data) {
+            if (data.is_taken) {
+            $('#modal').modal('hide')
+             }
+            },
+            error: function(data) {
+
+            }
+        });
+        return false;
+    }
+
+ </script>
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'main/page.html' %}
+
+{% load i18n static %}
+
+{% block content %}
+<br>
+<div align="center">
+
+    <fieldset>
+        <legend>Crear Proyecto</legend>
+    </fieldset>
+    <form action="" class="form-horizontal" method="post" id="form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="{{form.nombre.id_for_label}}">{{form.nombre.label}}</label>
+            <div class="col-sm-4">
+                {{form.nombre}}
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="{{form.usuario.id_for_label}}">{{form.usuario.label}}</label>
+            <div class="col-sm-4">
+                  {% if Rol == "QSA" %}
+                <select name="usuario" class="form-control input-sm" required id="id_usuario">
+                    <option value="{{ user.id }}">{{ user.username }}</option>
+                </select>
+                {% else %}
+                {{form.usuario}}
+                {% endif %}
+
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="{{form.cliente.id_for_label}}">{{form.cliente.label}}</label>
+            <div class="col-sm-4">
+                {{form.cliente}}
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="{{form.fecha_ini.id_for_label}}">{{form.fecha_ini.label}}</label>
+            <div class="col-sm-4">
+                {{form.fecha_ini}}
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+
+         <div class="form-group">
+            <label class="control-label col-sm-4" for="{{form.estado.id_for_label}}">{{form.estado.label}}</label>
+            <div class="col-sm-4">
+
+                <select name="estado" class="form-control input-sm" maxlength="1" id="id_estado">
+                   <option value="A">Activo</option>
+                 </select>
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+         <div class="form-group">
+            <label class="control-label col-sm-4" for="{{form.version.id_for_label}}">{{form.version.label}}</label>
+            <div class="col-sm-4">
+                {{form.version}}
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+
+
+         <footer class="footer navbar-fixed-bottom" style="padding:0.5%; height:auto;">
+        <button id="submit" class="btn btn-primary" type="submit">Guardar</button>
+         </footer>
+    </form>
+ <div id="modal" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+     <img src="{% static 'main/ajax/gifcargando.gif' %}">
+    </div>
+  </div>
+</div>
+
+</div>
+<script>
+ $("#form").on('submit', function(evt){
+ $('#modal').modal({backdrop: 'static', keyboard: false})
+ $('#modal').modal('show');
+ });
+</script>
+{% endblock %}

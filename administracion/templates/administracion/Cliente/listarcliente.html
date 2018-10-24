@@ -1,0 +1,55 @@
+{% extends 'main/page.html' %}
+{% block content %}
+<script> var cont = 0;</script>
+<div class="container-fluid" align="center">
+<br>
+    <fieldset >
+        <legend align="center" style="color:white">Listado de Clientes</legend>
+    </fieldset>
+    {% if clientes %}
+        {% for cliente in clientes%}
+        <table class="table " style="text-align: center;">
+            <thead style="background-color: #000000; color: white;">
+                <tr>
+                    <th style="text-align: center;">No.</th>
+                    <th style="text-align: center;">Nombre</th>
+                    <th style="text-align: center;">Nit</th>
+                    <th style="text-align: center;">Numero</th>
+                     <th style="text-align: center;">Estatus</th>
+                    <th style="text-align: center;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+               <tr>
+                   <td class="col-sm-1"><script>cont = cont+1; document.write(cont); </script></td>
+                   <td class="col-sm-3">{{ cliente.nombre }}</td>
+                   <td class="col-sm-2">{{ cliente.nit }}</td>
+                   <td class="col-sm-2">{{ cliente.numero }}</td>
+
+                   <td class="col-sm-1">{{cliente.status}}</td>
+
+                   <td class="col-sm-3">
+                       <div class="btn-group">
+  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Acción <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li ><a href="{% url 'administracion:editarcliente' cliente.id %}"><span class="glyphicon glyphicon-edit"></span>Editar Cliente</a></li>
+      <li><a href="{% url 'administracion:eliminarcliente' cliente.id %}"><span class="glyphicon glyphicon-remove"></span>Eliminar Cliente</a></li>
+
+  </ul>
+</div>
+
+                   </td>
+               </tr>
+            </tbody>
+        </table>
+        {% endfor %}
+    {%else%}
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Error!  </strong>No hay registros de Clientes <a href="{% url 'administracion:crearcliente' %}" class="alert-link"> Debe agregar o crear un Cliente</a>.
+        </div>
+    {%endif%}
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+     <table  id="tablarequerimientos" class="table" style="width:100%">
+             <thead>
+             <th width="10%">
+                 No:
+             </th>
+             <th width="60%">
+                 Descripcion
+             </th>
+             <th width="20%">
+                 Versión
+             </th>
+              <th width="10%">
+                 Acción
+             </th>
+             </thead>
+             <tbody>
+             {%for tema in temas %}
+             <tr   style="color:#FFFFFF">
+                 <td style="display: none"></td>
+             <td colspan="4" align="center" bgcolor="2C2727">
+                 {{tema.tema.descripcion_tema}}
+             </td>
+                  <td style="display: none"></td>
+                 <td style="display: none"></td>
+             </tr>
+
+             {%for requerimiento in tema.requerimientos %}
+              <tr>
+              <td>{{requerimiento.contador}}</td>
+             <td>
+                 {{requerimiento.req.descripcion|safe}}
+             </td>
+                  <td>
+                 {{requerimiento.req.version}}
+             </td>
+                  <td>
+
+
+                            <a  onclick="return abrir_modalEditarRequerimiento('{% url 'administracion:editarrequerimiento' requerimiento.req.id %}')" style="color:blue; display: inline-block;" data-toggle="tooltip" data-placement="top" title="Editar">
+                   <span  class="glyphicon glyphicon-edit" style=" font-size: 25px"></span></p>
+                </a>
+                       <a  onclick="return abrir_modal('{% url 'administracion:eliminarrequerimiento' requerimiento.req.id %}')" style="display: inline-block;" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                   <span  class="glyphicon glyphicon-remove-sign" style=" font-size: 25px"></span></p>
+                </a>
+
+
+             </td>
+             </tr>
+             {% endfor %}
+              {% endfor %}
+             </tbody>
+         </table>

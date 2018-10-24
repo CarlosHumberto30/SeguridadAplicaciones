@@ -1,0 +1,105 @@
+{% extends 'main/page.html' %}
+{% load i18n static %}
+{% block content %}
+<br>
+<div align="center">
+    <fieldset>
+             <legend>Editar Usuario</legend>
+    </fieldset>
+    <form action="" class="form-horizontal" method="post" id="form">
+    {% csrf_token %}
+         <label hidden="false"> {{forms.id}} {{forms.username}} </label>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="{{forms.username.id_for_label}}">Nombre de Usuario</label>
+            <div class="col-sm-4">
+                {{forms.username.value}}
+            </div>
+            <label id="labelusername" class="help-block col-sm-3"></label>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="{{forms.first_name.id_for_label}}">Nombre</label>
+            <div class="col-sm-4">
+                {{forms.first_name}}
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="{{forms.last_name.id_for_label}}">Apellido</label>
+            <div class="col-sm-4">
+                {{forms.last_name}}
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="{{forms.email.id_for_label}}">Email</label>
+            <div class="col-sm-4">
+                {{forms.email}}
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+
+         <div class="form-group">
+            <label class="control-label col-sm-4" for="password">Contraseña</label>
+            <div class="col-sm-4">
+                <input type="password" name="password" placeholder="Ingrese su contraseña " class="form-control input-sm" maxlength="30"  id="id_password">
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="{{forms.rol.id_for_label}}">Rol</label>
+            <div class="col-sm-4">
+                <select name="rol" class="form-control input-sm" id="id_rol">
+                    {% for group in groups %}
+
+                    {%if rol.name == group.name  %}
+                     <option value="{{ group.id }}" selected>{{group.name}}</option>
+                    {% else %}
+                    <option value="{{ group.id }}">{{group.name}}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+          <div class="alert alert-danger alert-dismissible fade in" hidden>
+
+    La contraseña debe  contener entre 8 y 16 caracteres, tener  al menos un numero, letra mayúscula, letra minúscula.
+  </div>
+         <footer class="footer navbar-fixed-bottom" style="padding:0.5%; height:auto;">
+        <input id="submit" class="btn btn-primary" type="submit" value="Guardar"/>
+        <a class="btn btn-warning" role="button" href="{% url 'administracion:listarusuario' %}">Cancelar</a>
+         </footer>
+    </form>
+
+
+    <div id="modal" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+     <img src="{% static 'main/ajax/gifcargando.gif' %}">
+    </div>
+  </div>
+</div>
+
+
+    <script>
+
+ $("#form").on('submit', function(evt){
+ var input = document.getElementById('id_password');
+ $('#modal').modal('show');
+ if(input.value.length > 0){
+         if (input.value.match(/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/)) {
+
+        }else{
+        $(".alert").show();
+        $('#modal').modal('hide');
+         evt.preventDefault();
+        }
+}
+
+
+ });
+
+</script>
+</div>
+{% endblock %}

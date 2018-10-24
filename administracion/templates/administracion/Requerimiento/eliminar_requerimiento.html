@@ -1,0 +1,29 @@
+ <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+                        <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">x</button>
+                <h3>Eliminar  Requerimiento</h3>
+            </div>
+            <div class="modal-body">
+   <form action="{% url 'administracion:eliminarrequerimiento' object.id %}" class="form-horizontal" method="post" id="FormEliminarRequerimiento" >
+      {% csrf_token %}
+       <h3>¿Desea eliminar el siguiente requerimiento:</h3>
+       <h3><strong>Tema:</strong> {{object.tema}} </h3>
+       <div style="border-style: solid;width: 400px;" align="left">
+           {{object.descripcion|safe}}
+       </div>
+         </form>
+
+                        <div class="modal-footer">
+                                <div class="col-lg-12 text-right">
+                                        <input type="button" class="btn btn-primary" name="submit" value="Eliminar"  onclick="eliminarrequerimiento();">
+                                        <button type="button" class="btn btn-default" onclick="return cerrar_modal()">
+                                                Cancelar
+                                        </button>
+                                </div>
+                        </div>
+            </div>
+
+
+        </div>
+</div>

@@ -1,0 +1,22 @@
+{% extends 'main/page.html' %}
+
+{% block content %}
+<br>
+<div align="center">
+    <fieldset>
+        <legend>Editar Versión</legend>
+    </fieldset>
+    <form action="" class="form-horizontal" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="control-label col-sm-5" for="{{form.nombre.id_for_label}}">{{form.nombre.label}}</label>
+            <div class="col-sm-3">
+                {{form.nombre}}
+            </div>
+            <label class="help-block col-sm-3"></label>
+        </div>
+        <button id="submit" class="btn btn-primary" type="submit">Guardar</button>
+        <a class="btn btn-warning" role="button" href="{% url 'administracion:listarversion' %}">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

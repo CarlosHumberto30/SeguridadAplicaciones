@@ -9,17 +9,25 @@
       <fieldset>
             <legend> Seguridad de Aplicaciones </legend>
       </fieldset>
-      <table style="width: 25%; height:100px;">
-          <tr>
-              <td align="right"><label>Usuario:&nbsp;</label></td>
-              <td>{{ form.username }}</td>
-          </tr>
-          <tr>
-              <td align="right"><label>Contraseña:&nbsp;</label></td>
-              <td>{{ form.password }}</td>
-          </tr>
-      </table>
-
+      <div class="form-horizontal">
+          <div class="form-group">
+                <label class="control-label col-sm-5" for="{{ form.username.id_for_label }}">Usuario:&nbsp;
+                </label>
+                <div class="col-sm-3">
+                    {{ form.username }}
+                </div>
+                <span class="help-block col-sm-4"></span>
+            </div>
+           <div class="form-group">
+                <label class="control-label col-sm-5" for="{{ form.password.id_for_label }}">Contraseña:&nbsp;
+                </label>
+                <div class="col-sm-3">
+                    {{ form.password }}
+                </div>
+                <span class="help-block col-sm-4"></span>
+            </div>
+      </div>
+      <label>Origin Master</label>
       <br>
         <input class="btn btn-primary" type="submit" value="Iniciar Sesión"/>
   </form>

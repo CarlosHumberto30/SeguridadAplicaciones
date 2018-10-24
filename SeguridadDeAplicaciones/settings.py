@@ -91,6 +91,8 @@ DATABASES = {
      }
  }
 
+
+
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
@@ -171,6 +173,7 @@ CACHES = {
 AXES_CACHE = 'axes_cache'
 
 AXES_LOCKOUT_URL = '/locked'
+AXES_USE_USER_AGENT= True
 
 CAPTCHA_FONT_SIZE= 45
 CAPTCHA_IMAGE_SIZE= (200,80)

@@ -97,8 +97,7 @@ def locked_out(request):
         if form.is_valid():
 
             ip = get_client_ip(request)
-            print("ip es --- ",ip[0])
-            reset(ip=ip[0])
+            reset(ip=request.META['REMOTE_ADDR'])
             return redirect('main:login')
     else:
         form = AxesCaptchaForm()

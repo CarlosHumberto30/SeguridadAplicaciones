@@ -2,6 +2,46 @@
 {% load i18n static %}
 
 {% block extrastyle %}
+ body {
+
+/* Ubicación de la imagen */
+
+background-image: url({% static 'main/img/cyberseguridad.png' %});
+
+/* Para dejar la imagen de fondo centrada, vertical y
+
+horizontalmente */
+
+background-position: center center;
+
+/* Para que la imagen de fondo no se repita */
+
+background-repeat: no-repeat;
+
+/* La imagen se fija en la ventana de visualización para que la altura de la imagen no supere a la del contenido */
+
+background-attachment: fixed;
+
+/* La imagen de fondo se reescala automáticamente con el cambio del ancho de ventana del navegador */
+
+background-size: cover;
+
+/* Se muestra un color de fondo mientras se está cargando la imagen
+
+de fondo o si hay problemas para cargarla */
+
+
+color: white;
+}
+
+@media only screen and (max-width: 100%) {
+
+body {
+
+background-image: url({% static 'main/img/cyberseguridad.png' %});
+
+}
+}
 /* Remove the navbar's default margin-bottom and rounded borders */
 legend {
 color: white;

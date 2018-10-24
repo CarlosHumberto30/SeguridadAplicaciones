@@ -36,8 +36,8 @@
     <style>
         {% block extrastyle %}
 
-
         {% endblock %}
+
     </style>
     {% block extrahead %}{% endblock %}
     {% block blockbots %}
@@ -54,8 +54,7 @@
 </head>
     {% load i18n %}
 
-<body data-admin-utc-offset="{% now 'Z' %}" style="background-image: url({% static 'main/img/cyberseguridad.png' %});background-repeat: no-repeat; background-position: center center;background-attachment: fixed;
-background-size: cover; color: white">
+<body  data-admin-utc-offset="{% now 'Z' %}" >
     {% block body %}{% endblock %}
 
     {% block extrascript %}{% endblock %}
